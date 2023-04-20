@@ -1,0 +1,231 @@
+{
+	"info": {
+		"_postman_id": "2fc33c51-e5ec-4084-98fe-462b253f7bf3",
+		"name": "Editorial Workflow API",
+		"description": "- [**Source**](http://editorial-app.appspot.com/workflows/api)\n- [Postman Source](https://www.dropbox.com/s/t1rggvrro6hx9n0/Editorial%20Workflow%20API.postman_collection.json?dl=0)\n- [Postman Published Documentation](https://documenter.getpostman.com/view/15808119/2s93Y2ThGt)\n\nThe workflow directory has a simple, JSON-based API that allows you to get information about shared workflows programmatically, for example using a Python script.\n\n## Search\nExample:\n`http://editorial-app.appspot.com/workflows/search?format=json&q=evernote`\n\nReturns a dictionary with a single `workflows` key that contains the search results. Each search result is a dictionary with the following keys:\n\n- `title` – the workflow's title\n- `url` – the URL of the workflow's preview page (append `?format=json` to the URL to get information about the workflow in JSON format)\n- `description` – the plain-text description of the workflow\n\n## Recent Workflows\nExample:\n\n`http://editorial-app.appspot.com/workflows/recent?format=json&limit=20`\n\nReturns a dictionary with a single `workflows` key that contains an array of the most-recently added workflows in the directory. The optional `limit` parameter can be used to set the maximum number of workflows that should be returned ::(capped at 1000, defaults to 100)::.\n\nEach entry in the `workflows` array is a dictionary with the following keys:\n\n- `title` – the workflow's title\n- `url` – the URL of the workflow's preview page. Append `?format=json` to the URL to get information about the workflow in JSON format.\n- `description` – the plain-text description of the workflow\n- `install_url` – a special editorial:// URL that can be used to add this workflow on a device that has Editorial installed. This will typically be quite long, because the URL itself contains all the workflow's data.\n- `workflow_data` – the JSON-formatted data of the workflow, as it is stored in the workflow (.wkflw) file on the device. The exact format of this data is not documented, and may change between versions.\n\n## Workflow Info\nExample:\n`http://editorial-app.appspot.com/workflow/5642556234792960/vJn-7Jsqklo?format=json`\n\nReturns information about a specific workflow. The workflow can be public or unlisted (if you know the URL).\n\nThe workflow information is returned as a dictionary with the following keys:\n\n- `title` – the workflow's title\n- `url` – the URL of the workflow's preview page. Append `?format=json` to the URL to get information about the workflow in JSON format.\n- `description` – the plain-text description of the workflow\n- `install_url` – a special editorial:// URL that can be used to add this workflow on a device that has Editorial installed. This will typically be quite long, because the URL itself contains all the workflow's data.\n- `workflow_data` – the JSON-formatted data of the workflow, as it is stored in the workflow (.wkflw) file on the device. The exact format of this data is not documented, and may change between versions.](http://editorial-app.appspot.com/workflows/api)\nThe workflow directory has a simple, JSON-based API that allows you to get information about shared workflows programmatically, for example using a Python script.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15808119",
+		"_collection_link": "https://www.postman.com/extratone/workspace/juegos/collection/15808119-2fc33c51-e5ec-4084-98fe-462b253f7bf3?action=share&creator=15808119&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Search Workflows",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://editorial-app.appspot.com/workflows/search?format=json&q=article&limit=100",
+					"protocol": "http",
+					"host": [
+						"editorial-app",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"workflows",
+						"search"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "q",
+							"value": "article"
+						},
+						{
+							"key": "limit",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Search Workflows",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://editorial-app.appspot.com/workflows/search?format=json&q=article&limit=100",
+							"protocol": "http",
+							"host": [
+								"editorial-app",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"workflows",
+								"search"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								},
+								{
+									"key": "q",
+									"value": "article"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "no-cache"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-Cloud-Trace-Context",
+							"value": "530f28ce55c83b323eb1250909af7ffb;o=1"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 20 Apr 2023 07:39:46 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Google Frontend"
+						},
+						{
+							"key": "Content-Length",
+							"value": "14010"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"workflows\": [\n        {\n            \"url\": \"http://editorial-app.appspot.com/workflow/5875471438839808/mFK1Zym7xkM\",\n            \"description\": \"This routine orders a given supermarket  list based on another master section/article list that you can build by yourself, and creates a task paper file with your  planned purchase route nicely distributed  by sections, and in the order that you usually traverse the supermarket, which is the order that you specify in your master list.  The  problem that this routine helps to solve is the following: at the moment when you  trap the list  of things that you need to purchase, you usually don't have in mind the order in which the supermarket places the articles into sections. You just drop you items as they come to your memory.  Later, when you are at the supermarket, and you use your unordered list,  you have to go up and down through it (unless you have memorized it) ,  and sometimes you miss an article and you have to step back through your route to get it. This routine can help you to avoid that very common situation among golden fishes like we many people are.\\n\\nThe routine is thought so you can use it for more than one supermarket.\\n\\nTo use this routine,  first, you create a file with your shopping  list formatted in the following fashion:\\n\\nMySupermarket @supermarket\\nList:\\nArticle 1\\nArticle 2\\nArticle 3:amount 3\\n...\\n...\\n\\nFirst and second lines are mandatory.  First line contains the name of the supermarket that you want to have the list ordered for.  You will see below why you need this line. The second line is just to tell to the routine that the list goes after the second line. After that, you will enter the items of your shopping list, and opcionalliy the amount of each items after a colon.\\n\\nOnce you have your shopping list, you will create a subdirectory  called \\\"super\\\" in the same directory where you have your shopping list. You will have to do this only once.\\n\\nInto that subdirectory, you create a file called \\\"MySupermarket.taskpaper\\\".  This file will contain the section/article ordered distribution that represents the route that you follow during your shopping. Note that the name of the file must be the same as the name of the supermarket of the first line in your shop list. You can have as many supermarket files as you want in your \\\"super \\\" subdirectory. The routine will reorder your shopping list using the file with the name in the first line of your shopping list.\\n\\nThe content of the file  \\\"MySupermarket.taskpaper\\\" (here is where you enter your shopping route)  that you create will have the following structure:\\n\\nSection 1:\\narticle 3\\nSection 2:\\narticle 2\\narticle 1\\n...\\n...\\n\\nAll section names must end with colons.\\nNote that the names of the articles must be lowercase, and notice that you should not write dashes behind the article names (you are not creating a task list; the routine will do that for you).\\n\\nOnce you have a master sorted out, just execute the workflow routine from you shopping list  file, and the routine will create the task list shopping route for you.\\n\\nOne last thing: the articles that the routine cannot find in your master list will be placed in an special section called  \\\"No section\\\" at the end.\\n\\nHappy shopping!\",\n            \"title\": \"Supermarket  Route\"\n        },\n        {\n            \"url\": \"http://editorial-app.appspot.com/workflow/5867820692799488/B0eUYWlZ_Yg\",\n            \"description\": \"Converts the HTML in clipboard (set from Workflow.app) to markdown, and opens the .md file in other apps. \\n\\nMarkdown also get copied to Clipboard.\\n\\nCan easily be changed to also save to Dropbox (see comments in python action)\\n\\nTo capture only Article HTML in any browser, and pass it on to this workflow, \\nuse: https://workflow.is/workflows/1b455f2b33d54b04ba93d9cb8c234a21\\n\\nAlso just delete the last action if Editorial is your markdown editor of choice.\",\n            \"title\": \"WebArticle2MD\"\n        },\n        {\n            \"url\": \"http://editorial-app.appspot.com/workflow/5347761222320128/Mu2xnDRrp7Q\",\n            \"description\": \"Converts the HTML in clipboard (set from Workflow.app) to markdown, and opens the .md file in other apps. \\n\\nMarkdown also get copied to Clipboard.\\n\\nCan easily be changed to also save to Dropbox (see comments in python action)\\n\\nTo capture only Article HTML in any browser, and pass it on to this workflow, \\nuse: https://workflow.is/workflows/1b455f2b33d54b04ba93d9cb8c234a21\\n\\nAlso just delete the last action if Editorial is your markdown editor of choice.\",\n            \"title\": \"WebArticle2MD\"\n        },\n        {\n            \"url\": \"http://editorial-app.appspot.com/workflow/5228600575918080/6gnkNSC_im4\",\n            \"description\": \"One of two workflows to create a personal wiki in Dropbox in the directory \\\"/wiki\\\".\\n\\nTurns selected text into a link to a new or existing .md article in your personal wiki. Also offers you the option to rename the file to something other than the selection.\\n\\nThe \\\"Open Wiki Link\\\" workflow is required to follow the links.\",\n            \"title\": \"Make Wiki Link\"\n        },\n        {\n            \"url\": \"http://editorial-app.appspot.com/workflow/6404062123655168/qo_FjezucTY\",\n            \"description\": \"# md->html_pdf_tex v.2.1\\n\\n## Authors:\\n\\n* Maurizio Manuguerra (maurizio.manuguerra@gmail.com)\\n* Robert Quinn\\n\\n## Introduction\\n\\nThis set of routines has been written with the idea that markdown files can be the origin of a plethora of formats and kind of documents. Specifically, md files can be converted to html, pdf, tex files, and both the LaTeX \\\"article\\\" and \\\"beamer\\\" classes are supported. \\n**The same source files can be used to generate a quick report, an article or a presentation.**\\nTables, equations (via MathJax) and images (local and remote) are supported in all the formats. \\n\\n## Use\\n \\nThis workflow starts from a md file and the user can preview the html generated and choose between these options:\\n\\n1. Export the html file. Remote images are temporarely downloaded and all the images are embedded in the html file in base64 encoding. Formulas are rendered via MathJax.\\n\\n2. Upload of the html and images files to a web service of choice.\\n\\n3. Creation of LaTeX files, either in class \\\"article\\\" or \\\"beamer\\\".  The .tex file generated is both copied in the clipboard and included in a zip file with all the images used in md file. Remote images are downloaded to create the zip file and then deleted.\\n\\nUse Reedle Documents, any other suitable app or a computer to unzip the project file and move the folder in your LaTeX compiler of choice. I have tested with a LaTeX installation on OSX, Texpad for iOS and Tex Writer for iOS and it works out-of-the-box for my need.\\n\\n## Conventions in LaTeX\\n\\nFor both article and beamer presentations, the title is taken from the filename.\\nFor the article class,\\n\\n> #: section\\n> ##: subsection\\n> ### or more: subsubsection\\n\\nFor the beamer (presentation) class,\\n\\n> #: section\\n> ##: subsection\\n> ###: frame (i.e. slide)\\n> #### or more: subsubsection\\n\\nPlease note that no proprietary command is needed to start a slide. Instead, as the idea is to use the same file to generate multiple types of documents, the triple hash (\\\"###\\\") is used.\\n\\n## Future work\\n\\n* Support for citations (bibtex).\\n* Support for footnotes.\\n\\nV2.1:\\n* the FTP server address has to be defined in the workflow.\\nV.2.0: \\n* UI redesign (for Editorial 1.1)\\n* possibility to upload to an ftp host the article or the presentation (the latter requires deck server-side).\\nV1.3:\\n* LaTex tables: relevant characters for LaTex tables (e.g. &) are not escaped any more. Tables now work.\\n* LaTex tables: \\\\hline now inserted between headers and body.\\nV1.2: \\n* html5 presentations, when exported, are now uploaded to a web hosting service thorugh ftp.\\n* horizontal-slide.css commented out as doesn't work on some platforms\\n* images are no more embedded in preview presentation as don't always work correctly\",\n            \"title\": \"md->html_tex\"\n        },\n        {\n            \"url\": \"http://editorial-app.appspot.com/workflow/5862516810842112/mfue7vUFZAM\",\n            \"description\": \"# md->html_pdf_tex v.1.0\\n\\n## Authors:\\n\\n* Maurizio Manuguerra (maurizio.manuguerra@gmail.com)\\n* Robert Quinn\\n\\n## Introduction\\n\\nThis set of routines has been written with the idea that markdown files can be the origin of a plethora of formats and kind of documents. Specifically, right now md files can be converted to html, pdf, tex files, and both the LaTeX \\\"article\\\" and \\\"beamer\\\" classes are supported. \\n**The same source files can be used to generate a quick report, an article or a presentation.**\\nTables, equations (via MathJax) and images (local and remote) are supported in all the formats. \\n\\n## Use\\n \\nThis workflow starts from a md file and the user can choose between these options:\\n \\n1. Preview of the html generated with markdown.\\n\\n2. Creation of quick PDF files via Reedle Documents (based on the html code). Remote images are temporarely downloaded and all the images are embedded in the html file in base64 encoding.\\n\\n3. Creation of LaTeX files, either in class \\\"article\\\" or \\\"beamer\\\".  The .tex file generated is both copied in the clipboard and included in a zip file with all the images used in md file. Remote images are downloaded to create the zip file and then deleted. Presentations in beamer can be created using well-designed md files (i.e. with sensible slide breaks) or just using a generic md file. In such case, the interpreter will make its own best to make things look ok (not super).\\n\\nUse Reedle Documents, any other suitable app or an old-fashioned computer to unzip the project file and move the folder in your LaTeX compiler of choice. I have tested with a LaTeX installation on OSX, Texpad for iOS and Tex Writer for iOS and it works out-of-the-box for my need.\\n\\n## Conventions in LaTeX\\n\\nFor both article and beamer presentations, the title is taken from the filename.\\nFor the article class,\\n\\n> #: section\\n> ##: subsection\\n> ### or more: subsubsection\\n\\nFor the beamer (presentation) class,\\n\\n> #: section\\n> ##: subsection\\n> ###: frame (i.e. slide)\\n> #### or more: subsubsection\\n\\nPlease note that no proprietary command is needed to start a slide. Instead, as the idea is to use the same file to generate multiple types of documents, the triple hash (\\\"###\\\") is used.\\n\\n## Future work\\n\\n* Support for citations (bibtex).\\n* Support for footnotes.\\n\",\n            \"title\": \"md->html_pdf_tex\"\n        },\n        {\n            \"url\": \"http://editorial-app.appspot.com/workflow/5795858918408192/HybFHu4qXn4\",\n            \"description\": \"# md->html_pdf_tex\\n\\n## Authors:\\n\\n* Maurizio Manuguerra (maurizio.manuguerra@gmail.com)\\n* Robert Quinn\\n\\n## Introduction\\n\\nThis set of routines has been written with the idea that markdown files can be the origin of a plethora of formats and kind of documents. Specifically, right now md files can be converted to html, pdf, tex files, and both the LaTeX \\\"article\\\" and \\\"beamer\\\" classes are supported. \\n**The same source files can be used to generate a quick report, an article or a presentation.**\\n\\n## Use\\n \\nThis workflow starts from a md file and the user can choose between these options:\\n \\n1. Preview of the html generated with markdown.\\n\\n2. Creation of quick PDF files via Reedle Documents (based on the html code). Remote images are temporarely downloaded and all the images are embedded in the html file in base64 encoding.\\n\\n3. Creation of LaTeX files, either in class \\\"article\\\" or \\\"beamer\\\".  Tables and images (local and remote) are supported. The .tex file generated is both copied in the clipboard and included in a zip file with all the images used in md file. Remote images are downloaded to create the zip file and then deleted. Presentations in beamer can be created using well-designed md files (i.e. with sensible slide breaks) or just using a generic md file. In such case, the interpreter will make its own best to make things look ok (not super).\\n\\nUse Reedle Documents, any other suitable app or an old-fashioned computer to unzip the project file and move the folder in your LaTeX compiler of choice. I have tested with a LaTeX installation on OSX, Texpad for iOS and Tex Writer for iOS and it works out-of-the-box for my need.\\n\\n## Conventions in LaTeX\\n\\nFor both article and beamer presentations, the title is taken from the filename.\\nFor the article class,\\n\\n> #: section\\n> ##: subsection\\n> ### or more: subsubsection\\n\\nFor the beamer (presentation) class,\\n\\n> #: section\\n> ##: subsection\\n> ###: frame (i.e. slide)\\n> #### or more: subsubsection\\n\\nPlease note that no proprietary command is needed to start a slide. Instead, as the idea is to use the same file to generate multiple types of documents, the triple hash (\\\"###\\\") is used.\",\n            \"title\": \"md->html_pdf_tex\"\n        },\n        {\n            \"url\": \"http://editorial-app.appspot.com/workflow/5248029397352448/UM7QGkev0vk\",\n            \"description\": \"A backend workflow that receives input from a Mr. reader service. Open URL for an article in Mr. Reader, in Editorial's browser. The service is simple enough. Set it up as follows:\\n\\neditorial://?input=[URL]&command=MrReaderURL\\n\\nObviously, use Mr. Reader's predefined [URL] placeholder for the input= . If you don't know, it's located above the keyboard when editing a service. \\n\\nI made it so I can run certain workflows in Editorial on particularly interesting or important articles, such as the clip Webpage, or to make a markdown link for an article, or save as a \\\"tab\\\" via the Save and Reopen Tabs duo workflows. Interested in adapting some workflows directly onto this one so we'll see what comes of it. \",\n            \"title\": \"MrReaderURL\"\n        },\n        {\n            \"url\": \"http://editorial-app.appspot.com/workflow/5801868382961664/KblIqnTUb0I\",\n            \"description\": \"Creates a table of contents to link to sections of an article using header IDs. The workflow extracts header names (between H2 and H6) and builds a list that links to sections using the Article URL variable at the beginning of the workflow.\\n\\nExample:\\n\\nhttp://www.macstories.net/roundups/os-x-mavericks-tips-tricks-and-details/#Section1\\n\\nhttp://www.macstories.net/roundups/os-x-mavericks-tips-tricks-and-details/#Section2\",\n            \"title\": \"Create ToC\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Recent Workflows",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://editorial-app.appspot.com/workflows/recent?format=json&limit=499",
+					"protocol": "http",
+					"host": [
+						"editorial-app",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"workflows",
+						"recent"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "limit",
+							"value": "499"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Workflow Info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://editorial-app.appspot.com/workflow/5046322772049920/pjMNMniXSII?format=json",
+					"protocol": "http",
+					"host": [
+						"editorial-app",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"workflow",
+						"5046322772049920",
+						"pjMNMniXSII"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Workflow Info",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://editorial-app.appspot.com/workflow/5046322772049920/pjMNMniXSII?format=json",
+							"protocol": "http",
+							"host": [
+								"editorial-app",
+								"appspot",
+								"com"
+							],
+							"path": [
+								"workflow",
+								"5046322772049920",
+								"pjMNMniXSII"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Cache-Control",
+							"value": "no-cache"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-Cloud-Trace-Context",
+							"value": "d3f21bdc7220f423e4e973650e72409c;o=1"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 20 Apr 2023 07:41:07 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Google Frontend"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2271"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"url\": \"http://editorial-app.appspot.com/workflow/5046322772049920/pjMNMniXSII\",\n    \"workflow_data\": {\n        \"username\": \"David Blue\",\n        \"description\": \"Manually triggers Editorial’s Dropbox sync action and calls the native `Bleep` notification sound when the sync has completed.\",\n        \"actions\": [\n            {\n                \"pauseWithoutShowingParameters\": false,\n                \"parameters\": {},\n                \"customTitle\": \"\",\n                \"pauseBeforeRunning\": false,\n                \"class\": \"WorkflowActionSyncWithDropbox\"\n            },\n            {\n                \"customTitle\": \"\",\n                \"parameters\": {\n                    \"effectName\": \"Bleep\",\n                    \"waitUntilFinished\": true\n                },\n                \"pauseWithoutShowingParameters\": false,\n                \"colorLabel\": 3,\n                \"class\": \"WorkflowActionPlaySoundEffect\",\n                \"pauseBeforeRunning\": false\n            }\n        ],\n        \"name\": \"Dropbox Sync\",\n        \"version\": \"120003\",\n        \"device\": {\n            \"userInterfaceIdiom\": 0,\n            \"model\": \"iPhone4,1\",\n            \"systemVersion\": \"8.4.1\"\n        },\n        \"type\": \"wkflw\",\n        \"public\": true,\n        \"icon\": \"minicons-icons-refresh-update-1.png\"\n    },\n    \"install_url\": \"editorial://add-workflow?workflow-data=%7B%22username%22%3A%20%22David%20Blue%22%2C%20%22description%22%3A%20%22Manually%20triggers%20Editorial%5Cu2019s%20Dropbox%20sync%20action%20and%20calls%20the%20native%20%60Bleep%60%20notification%20sound%20when%20the%20sync%20has%20completed.%22%2C%20%22actions%22%3A%20%5B%7B%22pauseWithoutShowingParameters%22%3A%20false%2C%20%22pauseBeforeRunning%22%3A%20false%2C%20%22customTitle%22%3A%20%22%22%2C%20%22parameters%22%3A%20%7B%7D%2C%20%22class%22%3A%20%22WorkflowActionSyncWithDropbox%22%7D%2C%20%7B%22customTitle%22%3A%20%22%22%2C%20%22parameters%22%3A%20%7B%22effectName%22%3A%20%22Bleep%22%2C%20%22waitUntilFinished%22%3A%20true%7D%2C%20%22pauseWithoutShowingParameters%22%3A%20false%2C%20%22colorLabel%22%3A%203%2C%20%22class%22%3A%20%22WorkflowActionPlaySoundEffect%22%2C%20%22pauseBeforeRunning%22%3A%20false%7D%5D%2C%20%22version%22%3A%20%22120003%22%2C%20%22device%22%3A%20%7B%22userInterfaceIdiom%22%3A%200%2C%20%22model%22%3A%20%22iPhone4%2C1%22%2C%20%22systemVersion%22%3A%20%228.4.1%22%7D%2C%20%22icon%22%3A%20%22minicons-icons-refresh-update-1.png%22%2C%20%22type%22%3A%20%22wkflw%22%2C%20%22public%22%3A%20true%2C%20%22name%22%3A%20%22Dropbox%20Sync%22%7D\",\n    \"description\": \"Manually triggers Editorial’s Dropbox sync action and calls the native `Bleep` notification sound when the sync has completed.\",\n    \"title\": \"Dropbox Sync\"\n}"
+				}
+			]
+		}
+	]
+}
