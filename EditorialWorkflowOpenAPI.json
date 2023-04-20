@@ -1,0 +1,1617 @@
+openapi: 3.0.3
+info:
+  title: Editorial Workflow API
+  description: >-
+    - [**Source**](http://editorial-app.appspot.com/workflows/api)
+
+    - [Postman
+    Source](https://www.dropbox.com/s/t1rggvrro6hx9n0/Editorial%20Workflow%20API.postman_collection.json?dl=0)
+
+    - [Postman Published
+    Documentation](https://documenter.getpostman.com/view/15808119/2s93Y2ThGt)
+
+
+    The workflow directory has a simple, JSON-based API that allows you to get
+    information about shared workflows programmatically, for example using a
+    Python script.
+
+
+    ## Search
+
+    Example:
+
+    `http://editorial-app.appspot.com/workflows/search?format=json&q=evernote`
+
+
+    Returns a dictionary with a single `workflows` key that contains the search
+    results. Each search result is a dictionary with the following keys:
+
+
+    - `title` – the workflow's title
+
+    - `url` – the URL of the workflow's preview page (append `?format=json` to
+    the URL to get information about the workflow in JSON format)
+
+    - `description` – the plain-text description of the workflow
+
+
+    ## Recent Workflows
+
+    Example:
+
+
+    `http://editorial-app.appspot.com/workflows/recent?format=json&limit=20`
+
+
+    Returns a dictionary with a single `workflows` key that contains an array of
+    the most-recently added workflows in the directory. The optional `limit`
+    parameter can be used to set the maximum number of workflows that should be
+    returned ::(capped at 1000, defaults to 100)::.
+
+
+    Each entry in the `workflows` array is a dictionary with the following keys:
+
+
+    - `title` – the workflow's title
+
+    - `url` – the URL of the workflow's preview page. Append `?format=json` to
+    the URL to get information about the workflow in JSON format.
+
+    - `description` – the plain-text description of the workflow
+
+    - `install_url` – a special editorial:// URL that can be used to add this
+    workflow on a device that has Editorial installed. This will typically be
+    quite long, because the URL itself contains all the workflow's data.
+
+    - `workflow_data` – the JSON-formatted data of the workflow, as it is stored
+    in the workflow (.wkflw) file on the device. The exact format of this data
+    is not documented, and may change between versions.
+
+
+    ## Workflow Info
+
+    Example:
+
+    `http://editorial-app.appspot.com/workflow/5642556234792960/vJn-7Jsqklo?format=json`
+
+
+    Returns information about a specific workflow. The workflow can be public or
+    unlisted (if you know the URL).
+
+
+    The workflow information is returned as a dictionary with the following
+    keys:
+
+
+    - `title` – the workflow's title
+
+    - `url` – the URL of the workflow's preview page. Append `?format=json` to
+    the URL to get information about the workflow in JSON format.
+
+    - `description` – the plain-text description of the workflow
+
+    - `install_url` – a special editorial:// URL that can be used to add this
+    workflow on a device that has Editorial installed. This will typically be
+    quite long, because the URL itself contains all the workflow's data.
+
+    - `workflow_data` – the JSON-formatted data of the workflow, as it is stored
+    in the workflow (.wkflw) file on the device. The exact format of this data
+    is not documented, and may change between
+    versions.](http://editorial-app.appspot.com/workflows/api)
+
+    The workflow directory has a simple, JSON-based API that allows you to get
+    information about shared workflows programmatically, for example using a
+    Python script.
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: http://editorial-app.appspot.com
+paths:
+  /workflows/search:
+    get:
+      summary: Search Workflows
+      description: Search Workflows
+      operationId: searchWorkflows
+      parameters:
+        - name: format
+          in: query
+          schema:
+            type: string
+            example: json
+        - name: q
+          in: query
+          schema:
+            type: string
+            example: article
+        - name: limit
+          in: query
+          schema:
+            type: string
+            example: '100'
+      responses:
+        '200':
+          description: Search Workflows
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache
+            Content-Length:
+              schema:
+                type: string
+                example: '14010'
+            Date:
+              schema:
+                type: string
+                example: Thu, 20 Apr 2023 07:39:46 GMT
+            Server:
+              schema:
+                type: string
+                example: Google Frontend
+            X-Cloud-Trace-Context:
+              schema:
+                type: string
+                example: 530f28ce55c83b323eb1250909af7ffb;o=1
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workflows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        description:
+                          type: string
+                          example: >-
+                            This routine orders a given supermarket  list based
+                            on another master section/article list that you can
+                            build by yourself, and creates a task paper file
+                            with your  planned purchase route nicely
+                            distributed  by sections, and in the order that you
+                            usually traverse the supermarket, which is the order
+                            that you specify in your master list.  The  problem
+                            that this routine helps to solve is the following:
+                            at the moment when you  trap the list  of things
+                            that you need to purchase, you usually don't have in
+                            mind the order in which the supermarket places the
+                            articles into sections. You just drop you items as
+                            they come to your memory.  Later, when you are at
+                            the supermarket, and you use your unordered list, 
+                            you have to go up and down through it (unless you
+                            have memorized it) ,  and sometimes you miss an
+                            article and you have to step back through your route
+                            to get it. This routine can help you to avoid that
+                            very common situation among golden fishes like we
+                            many people are.
+
+
+                            The routine is thought so you can use it for more
+                            than one supermarket.
+
+
+                            To use this routine,  first, you create a file with
+                            your shopping  list formatted in the following
+                            fashion:
+
+
+                            MySupermarket @supermarket
+
+                            List:
+
+                            Article 1
+
+                            Article 2
+
+                            Article 3:amount 3
+
+                            ...
+
+                            ...
+
+
+                            First and second lines are mandatory.  First line
+                            contains the name of the supermarket that you want
+                            to have the list ordered for.  You will see below
+                            why you need this line. The second line is just to
+                            tell to the routine that the list goes after the
+                            second line. After that, you will enter the items of
+                            your shopping list, and opcionalliy the amount of
+                            each items after a colon.
+
+
+                            Once you have your shopping list, you will create a
+                            subdirectory  called "super" in the same directory
+                            where you have your shopping list. You will have to
+                            do this only once.
+
+
+                            Into that subdirectory, you create a file called
+                            "MySupermarket.taskpaper".  This file will contain
+                            the section/article ordered distribution that
+                            represents the route that you follow during your
+                            shopping. Note that the name of the file must be the
+                            same as the name of the supermarket of the first
+                            line in your shop list. You can have as many
+                            supermarket files as you want in your "super "
+                            subdirectory. The routine will reorder your shopping
+                            list using the file with the name in the first line
+                            of your shopping list.
+
+
+                            The content of the file  "MySupermarket.taskpaper"
+                            (here is where you enter your shopping route)  that
+                            you create will have the following structure:
+
+
+                            Section 1:
+
+                            article 3
+
+                            Section 2:
+
+                            article 2
+
+                            article 1
+
+                            ...
+
+                            ...
+
+
+                            All section names must end with colons.
+
+                            Note that the names of the articles must be
+                            lowercase, and notice that you should not write
+                            dashes behind the article names (you are not
+                            creating a task list; the routine will do that for
+                            you).
+
+
+                            Once you have a master sorted out, just execute the
+                            workflow routine from you shopping list  file, and
+                            the routine will create the task list shopping route
+                            for you.
+
+
+                            One last thing: the articles that the routine cannot
+                            find in your master list will be placed in an
+                            special section called  "No section" at the end.
+
+
+                            Happy shopping!
+                        title:
+                          type: string
+                          example: Supermarket  Route
+                        url:
+                          type: string
+                          example: >-
+                            http://editorial-app.appspot.com/workflow/5875471438839808/mFK1Zym7xkM
+                    example:
+                      - description: >-
+                          This routine orders a given supermarket  list based on
+                          another master section/article list that you can build
+                          by yourself, and creates a task paper file with your 
+                          planned purchase route nicely distributed  by
+                          sections, and in the order that you usually traverse
+                          the supermarket, which is the order that you specify
+                          in your master list.  The  problem that this routine
+                          helps to solve is the following: at the moment when
+                          you  trap the list  of things that you need to
+                          purchase, you usually don't have in mind the order in
+                          which the supermarket places the articles into
+                          sections. You just drop you items as they come to your
+                          memory.  Later, when you are at the supermarket, and
+                          you use your unordered list,  you have to go up and
+                          down through it (unless you have memorized it) ,  and
+                          sometimes you miss an article and you have to step
+                          back through your route to get it. This routine can
+                          help you to avoid that very common situation among
+                          golden fishes like we many people are.
+
+
+                          The routine is thought so you can use it for more than
+                          one supermarket.
+
+
+                          To use this routine,  first, you create a file with
+                          your shopping  list formatted in the following
+                          fashion:
+
+
+                          MySupermarket @supermarket
+
+                          List:
+
+                          Article 1
+
+                          Article 2
+
+                          Article 3:amount 3
+
+                          ...
+
+                          ...
+
+
+                          First and second lines are mandatory.  First line
+                          contains the name of the supermarket that you want to
+                          have the list ordered for.  You will see below why you
+                          need this line. The second line is just to tell to the
+                          routine that the list goes after the second line.
+                          After that, you will enter the items of your shopping
+                          list, and opcionalliy the amount of each items after a
+                          colon.
+
+
+                          Once you have your shopping list, you will create a
+                          subdirectory  called "super" in the same directory
+                          where you have your shopping list. You will have to do
+                          this only once.
+
+
+                          Into that subdirectory, you create a file called
+                          "MySupermarket.taskpaper".  This file will contain the
+                          section/article ordered distribution that represents
+                          the route that you follow during your shopping. Note
+                          that the name of the file must be the same as the name
+                          of the supermarket of the first line in your shop
+                          list. You can have as many supermarket files as you
+                          want in your "super " subdirectory. The routine will
+                          reorder your shopping list using the file with the
+                          name in the first line of your shopping list.
+
+
+                          The content of the file  "MySupermarket.taskpaper"
+                          (here is where you enter your shopping route)  that
+                          you create will have the following structure:
+
+
+                          Section 1:
+
+                          article 3
+
+                          Section 2:
+
+                          article 2
+
+                          article 1
+
+                          ...
+
+                          ...
+
+
+                          All section names must end with colons.
+
+                          Note that the names of the articles must be lowercase,
+                          and notice that you should not write dashes behind the
+                          article names (you are not creating a task list; the
+                          routine will do that for you).
+
+
+                          Once you have a master sorted out, just execute the
+                          workflow routine from you shopping list  file, and the
+                          routine will create the task list shopping route for
+                          you.
+
+
+                          One last thing: the articles that the routine cannot
+                          find in your master list will be placed in an special
+                          section called  "No section" at the end.
+
+
+                          Happy shopping!
+                        title: Supermarket  Route
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5875471438839808/mFK1Zym7xkM
+                      - description: >-
+                          Converts the HTML in clipboard (set from Workflow.app)
+                          to markdown, and opens the .md file in other apps. 
+
+
+                          Markdown also get copied to Clipboard.
+
+
+                          Can easily be changed to also save to Dropbox (see
+                          comments in python action)
+
+
+                          To capture only Article HTML in any browser, and pass
+                          it on to this workflow, 
+
+                          use:
+                          https://workflow.is/workflows/1b455f2b33d54b04ba93d9cb8c234a21
+
+
+                          Also just delete the last action if Editorial is your
+                          markdown editor of choice.
+                        title: WebArticle2MD
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5867820692799488/B0eUYWlZ_Yg
+                      - description: >-
+                          Converts the HTML in clipboard (set from Workflow.app)
+                          to markdown, and opens the .md file in other apps. 
+
+
+                          Markdown also get copied to Clipboard.
+
+
+                          Can easily be changed to also save to Dropbox (see
+                          comments in python action)
+
+
+                          To capture only Article HTML in any browser, and pass
+                          it on to this workflow, 
+
+                          use:
+                          https://workflow.is/workflows/1b455f2b33d54b04ba93d9cb8c234a21
+
+
+                          Also just delete the last action if Editorial is your
+                          markdown editor of choice.
+                        title: WebArticle2MD
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5347761222320128/Mu2xnDRrp7Q
+                      - description: >-
+                          One of two workflows to create a personal wiki in
+                          Dropbox in the directory "/wiki".
+
+
+                          Turns selected text into a link to a new or existing
+                          .md article in your personal wiki. Also offers you the
+                          option to rename the file to something other than the
+                          selection.
+
+
+                          The "Open Wiki Link" workflow is required to follow
+                          the links.
+                        title: Make Wiki Link
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5228600575918080/6gnkNSC_im4
+                      - description: >-
+                          # md->html_pdf_tex v.2.1
+
+
+                          ## Authors:
+
+
+                          * Maurizio Manuguerra (maurizio.manuguerra@gmail.com)
+
+                          * Robert Quinn
+
+
+                          ## Introduction
+
+
+                          This set of routines has been written with the idea
+                          that markdown files can be the origin of a plethora of
+                          formats and kind of documents. Specifically, md files
+                          can be converted to html, pdf, tex files, and both the
+                          LaTeX "article" and "beamer" classes are supported. 
+
+                          **The same source files can be used to generate a
+                          quick report, an article or a presentation.**
+
+                          Tables, equations (via MathJax) and images (local and
+                          remote) are supported in all the formats. 
+
+
+                          ## Use
+                           
+                          This workflow starts from a md file and the user can
+                          preview the html generated and choose between these
+                          options:
+
+
+                          1. Export the html file. Remote images are temporarely
+                          downloaded and all the images are embedded in the html
+                          file in base64 encoding. Formulas are rendered via
+                          MathJax.
+
+
+                          2. Upload of the html and images files to a web
+                          service of choice.
+
+
+                          3. Creation of LaTeX files, either in class "article"
+                          or "beamer".  The .tex file generated is both copied
+                          in the clipboard and included in a zip file with all
+                          the images used in md file. Remote images are
+                          downloaded to create the zip file and then deleted.
+
+
+                          Use Reedle Documents, any other suitable app or a
+                          computer to unzip the project file and move the folder
+                          in your LaTeX compiler of choice. I have tested with a
+                          LaTeX installation on OSX, Texpad for iOS and Tex
+                          Writer for iOS and it works out-of-the-box for my
+                          need.
+
+
+                          ## Conventions in LaTeX
+
+
+                          For both article and beamer presentations, the title
+                          is taken from the filename.
+
+                          For the article class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ### or more: subsubsection
+
+
+                          For the beamer (presentation) class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ###: frame (i.e. slide)
+
+                          > #### or more: subsubsection
+
+
+                          Please note that no proprietary command is needed to
+                          start a slide. Instead, as the idea is to use the same
+                          file to generate multiple types of documents, the
+                          triple hash ("###") is used.
+
+
+                          ## Future work
+
+
+                          * Support for citations (bibtex).
+
+                          * Support for footnotes.
+
+
+                          V2.1:
+
+                          * the FTP server address has to be defined in the
+                          workflow.
+
+                          V.2.0: 
+
+                          * UI redesign (for Editorial 1.1)
+
+                          * possibility to upload to an ftp host the article or
+                          the presentation (the latter requires deck
+                          server-side).
+
+                          V1.3:
+
+                          * LaTex tables: relevant characters for LaTex tables
+                          (e.g. &) are not escaped any more. Tables now work.
+
+                          * LaTex tables: \hline now inserted between headers
+                          and body.
+
+                          V1.2: 
+
+                          * html5 presentations, when exported, are now uploaded
+                          to a web hosting service thorugh ftp.
+
+                          * horizontal-slide.css commented out as doesn't work
+                          on some platforms
+
+                          * images are no more embedded in preview presentation
+                          as don't always work correctly
+                        title: md->html_tex
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/6404062123655168/qo_FjezucTY
+                      - description: >
+                          # md->html_pdf_tex v.1.0
+
+
+                          ## Authors:
+
+
+                          * Maurizio Manuguerra (maurizio.manuguerra@gmail.com)
+
+                          * Robert Quinn
+
+
+                          ## Introduction
+
+
+                          This set of routines has been written with the idea
+                          that markdown files can be the origin of a plethora of
+                          formats and kind of documents. Specifically, right now
+                          md files can be converted to html, pdf, tex files, and
+                          both the LaTeX "article" and "beamer" classes are
+                          supported. 
+
+                          **The same source files can be used to generate a
+                          quick report, an article or a presentation.**
+
+                          Tables, equations (via MathJax) and images (local and
+                          remote) are supported in all the formats. 
+
+
+                          ## Use
+                           
+                          This workflow starts from a md file and the user can
+                          choose between these options:
+                           
+                          1. Preview of the html generated with markdown.
+
+
+                          2. Creation of quick PDF files via Reedle Documents
+                          (based on the html code). Remote images are
+                          temporarely downloaded and all the images are embedded
+                          in the html file in base64 encoding.
+
+
+                          3. Creation of LaTeX files, either in class "article"
+                          or "beamer".  The .tex file generated is both copied
+                          in the clipboard and included in a zip file with all
+                          the images used in md file. Remote images are
+                          downloaded to create the zip file and then deleted.
+                          Presentations in beamer can be created using
+                          well-designed md files (i.e. with sensible slide
+                          breaks) or just using a generic md file. In such case,
+                          the interpreter will make its own best to make things
+                          look ok (not super).
+
+
+                          Use Reedle Documents, any other suitable app or an
+                          old-fashioned computer to unzip the project file and
+                          move the folder in your LaTeX compiler of choice. I
+                          have tested with a LaTeX installation on OSX, Texpad
+                          for iOS and Tex Writer for iOS and it works
+                          out-of-the-box for my need.
+
+
+                          ## Conventions in LaTeX
+
+
+                          For both article and beamer presentations, the title
+                          is taken from the filename.
+
+                          For the article class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ### or more: subsubsection
+
+
+                          For the beamer (presentation) class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ###: frame (i.e. slide)
+
+                          > #### or more: subsubsection
+
+
+                          Please note that no proprietary command is needed to
+                          start a slide. Instead, as the idea is to use the same
+                          file to generate multiple types of documents, the
+                          triple hash ("###") is used.
+
+
+                          ## Future work
+
+
+                          * Support for citations (bibtex).
+
+                          * Support for footnotes.
+                        title: md->html_pdf_tex
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5862516810842112/mfue7vUFZAM
+                      - description: >-
+                          # md->html_pdf_tex
+
+
+                          ## Authors:
+
+
+                          * Maurizio Manuguerra (maurizio.manuguerra@gmail.com)
+
+                          * Robert Quinn
+
+
+                          ## Introduction
+
+
+                          This set of routines has been written with the idea
+                          that markdown files can be the origin of a plethora of
+                          formats and kind of documents. Specifically, right now
+                          md files can be converted to html, pdf, tex files, and
+                          both the LaTeX "article" and "beamer" classes are
+                          supported. 
+
+                          **The same source files can be used to generate a
+                          quick report, an article or a presentation.**
+
+
+                          ## Use
+                           
+                          This workflow starts from a md file and the user can
+                          choose between these options:
+                           
+                          1. Preview of the html generated with markdown.
+
+
+                          2. Creation of quick PDF files via Reedle Documents
+                          (based on the html code). Remote images are
+                          temporarely downloaded and all the images are embedded
+                          in the html file in base64 encoding.
+
+
+                          3. Creation of LaTeX files, either in class "article"
+                          or "beamer".  Tables and images (local and remote) are
+                          supported. The .tex file generated is both copied in
+                          the clipboard and included in a zip file with all the
+                          images used in md file. Remote images are downloaded
+                          to create the zip file and then deleted. Presentations
+                          in beamer can be created using well-designed md files
+                          (i.e. with sensible slide breaks) or just using a
+                          generic md file. In such case, the interpreter will
+                          make its own best to make things look ok (not super).
+
+
+                          Use Reedle Documents, any other suitable app or an
+                          old-fashioned computer to unzip the project file and
+                          move the folder in your LaTeX compiler of choice. I
+                          have tested with a LaTeX installation on OSX, Texpad
+                          for iOS and Tex Writer for iOS and it works
+                          out-of-the-box for my need.
+
+
+                          ## Conventions in LaTeX
+
+
+                          For both article and beamer presentations, the title
+                          is taken from the filename.
+
+                          For the article class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ### or more: subsubsection
+
+
+                          For the beamer (presentation) class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ###: frame (i.e. slide)
+
+                          > #### or more: subsubsection
+
+
+                          Please note that no proprietary command is needed to
+                          start a slide. Instead, as the idea is to use the same
+                          file to generate multiple types of documents, the
+                          triple hash ("###") is used.
+                        title: md->html_pdf_tex
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5795858918408192/HybFHu4qXn4
+                      - description: >-
+                          A backend workflow that receives input from a Mr.
+                          reader service. Open URL for an article in Mr. Reader,
+                          in Editorial's browser. The service is simple enough.
+                          Set it up as follows:
+
+
+                          editorial://?input=[URL]&command=MrReaderURL
+
+
+                          Obviously, use Mr. Reader's predefined [URL]
+                          placeholder for the input= . If you don't know, it's
+                          located above the keyboard when editing a service. 
+
+
+                          I made it so I can run certain workflows in Editorial
+                          on particularly interesting or important articles,
+                          such as the clip Webpage, or to make a markdown link
+                          for an article, or save as a "tab" via the Save and
+                          Reopen Tabs duo workflows. Interested in adapting some
+                          workflows directly onto this one so we'll see what
+                          comes of it. 
+                        title: MrReaderURL
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5248029397352448/UM7QGkev0vk
+                      - description: >-
+                          Creates a table of contents to link to sections of an
+                          article using header IDs. The workflow extracts header
+                          names (between H2 and H6) and builds a list that links
+                          to sections using the Article URL variable at the
+                          beginning of the workflow.
+
+
+                          Example:
+
+
+                          http://www.macstories.net/roundups/os-x-mavericks-tips-tricks-and-details/#Section1
+
+
+                          http://www.macstories.net/roundups/os-x-mavericks-tips-tricks-and-details/#Section2
+                        title: Create ToC
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5801868382961664/KblIqnTUb0I
+              examples:
+                Search Workflows:
+                  value:
+                    workflows:
+                      - description: >-
+                          This routine orders a given supermarket  list based on
+                          another master section/article list that you can build
+                          by yourself, and creates a task paper file with your 
+                          planned purchase route nicely distributed  by
+                          sections, and in the order that you usually traverse
+                          the supermarket, which is the order that you specify
+                          in your master list.  The  problem that this routine
+                          helps to solve is the following: at the moment when
+                          you  trap the list  of things that you need to
+                          purchase, you usually don't have in mind the order in
+                          which the supermarket places the articles into
+                          sections. You just drop you items as they come to your
+                          memory.  Later, when you are at the supermarket, and
+                          you use your unordered list,  you have to go up and
+                          down through it (unless you have memorized it) ,  and
+                          sometimes you miss an article and you have to step
+                          back through your route to get it. This routine can
+                          help you to avoid that very common situation among
+                          golden fishes like we many people are.
+
+
+                          The routine is thought so you can use it for more than
+                          one supermarket.
+
+
+                          To use this routine,  first, you create a file with
+                          your shopping  list formatted in the following
+                          fashion:
+
+
+                          MySupermarket @supermarket
+
+                          List:
+
+                          Article 1
+
+                          Article 2
+
+                          Article 3:amount 3
+
+                          ...
+
+                          ...
+
+
+                          First and second lines are mandatory.  First line
+                          contains the name of the supermarket that you want to
+                          have the list ordered for.  You will see below why you
+                          need this line. The second line is just to tell to the
+                          routine that the list goes after the second line.
+                          After that, you will enter the items of your shopping
+                          list, and opcionalliy the amount of each items after a
+                          colon.
+
+
+                          Once you have your shopping list, you will create a
+                          subdirectory  called "super" in the same directory
+                          where you have your shopping list. You will have to do
+                          this only once.
+
+
+                          Into that subdirectory, you create a file called
+                          "MySupermarket.taskpaper".  This file will contain the
+                          section/article ordered distribution that represents
+                          the route that you follow during your shopping. Note
+                          that the name of the file must be the same as the name
+                          of the supermarket of the first line in your shop
+                          list. You can have as many supermarket files as you
+                          want in your "super " subdirectory. The routine will
+                          reorder your shopping list using the file with the
+                          name in the first line of your shopping list.
+
+
+                          The content of the file  "MySupermarket.taskpaper"
+                          (here is where you enter your shopping route)  that
+                          you create will have the following structure:
+
+
+                          Section 1:
+
+                          article 3
+
+                          Section 2:
+
+                          article 2
+
+                          article 1
+
+                          ...
+
+                          ...
+
+
+                          All section names must end with colons.
+
+                          Note that the names of the articles must be lowercase,
+                          and notice that you should not write dashes behind the
+                          article names (you are not creating a task list; the
+                          routine will do that for you).
+
+
+                          Once you have a master sorted out, just execute the
+                          workflow routine from you shopping list  file, and the
+                          routine will create the task list shopping route for
+                          you.
+
+
+                          One last thing: the articles that the routine cannot
+                          find in your master list will be placed in an special
+                          section called  "No section" at the end.
+
+
+                          Happy shopping!
+                        title: Supermarket  Route
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5875471438839808/mFK1Zym7xkM
+                      - description: >-
+                          Converts the HTML in clipboard (set from Workflow.app)
+                          to markdown, and opens the .md file in other apps. 
+
+
+                          Markdown also get copied to Clipboard.
+
+
+                          Can easily be changed to also save to Dropbox (see
+                          comments in python action)
+
+
+                          To capture only Article HTML in any browser, and pass
+                          it on to this workflow, 
+
+                          use:
+                          https://workflow.is/workflows/1b455f2b33d54b04ba93d9cb8c234a21
+
+
+                          Also just delete the last action if Editorial is your
+                          markdown editor of choice.
+                        title: WebArticle2MD
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5867820692799488/B0eUYWlZ_Yg
+                      - description: >-
+                          Converts the HTML in clipboard (set from Workflow.app)
+                          to markdown, and opens the .md file in other apps. 
+
+
+                          Markdown also get copied to Clipboard.
+
+
+                          Can easily be changed to also save to Dropbox (see
+                          comments in python action)
+
+
+                          To capture only Article HTML in any browser, and pass
+                          it on to this workflow, 
+
+                          use:
+                          https://workflow.is/workflows/1b455f2b33d54b04ba93d9cb8c234a21
+
+
+                          Also just delete the last action if Editorial is your
+                          markdown editor of choice.
+                        title: WebArticle2MD
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5347761222320128/Mu2xnDRrp7Q
+                      - description: >-
+                          One of two workflows to create a personal wiki in
+                          Dropbox in the directory "/wiki".
+
+
+                          Turns selected text into a link to a new or existing
+                          .md article in your personal wiki. Also offers you the
+                          option to rename the file to something other than the
+                          selection.
+
+
+                          The "Open Wiki Link" workflow is required to follow
+                          the links.
+                        title: Make Wiki Link
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5228600575918080/6gnkNSC_im4
+                      - description: >-
+                          # md->html_pdf_tex v.2.1
+
+
+                          ## Authors:
+
+
+                          * Maurizio Manuguerra (maurizio.manuguerra@gmail.com)
+
+                          * Robert Quinn
+
+
+                          ## Introduction
+
+
+                          This set of routines has been written with the idea
+                          that markdown files can be the origin of a plethora of
+                          formats and kind of documents. Specifically, md files
+                          can be converted to html, pdf, tex files, and both the
+                          LaTeX "article" and "beamer" classes are supported. 
+
+                          **The same source files can be used to generate a
+                          quick report, an article or a presentation.**
+
+                          Tables, equations (via MathJax) and images (local and
+                          remote) are supported in all the formats. 
+
+
+                          ## Use
+                           
+                          This workflow starts from a md file and the user can
+                          preview the html generated and choose between these
+                          options:
+
+
+                          1. Export the html file. Remote images are temporarely
+                          downloaded and all the images are embedded in the html
+                          file in base64 encoding. Formulas are rendered via
+                          MathJax.
+
+
+                          2. Upload of the html and images files to a web
+                          service of choice.
+
+
+                          3. Creation of LaTeX files, either in class "article"
+                          or "beamer".  The .tex file generated is both copied
+                          in the clipboard and included in a zip file with all
+                          the images used in md file. Remote images are
+                          downloaded to create the zip file and then deleted.
+
+
+                          Use Reedle Documents, any other suitable app or a
+                          computer to unzip the project file and move the folder
+                          in your LaTeX compiler of choice. I have tested with a
+                          LaTeX installation on OSX, Texpad for iOS and Tex
+                          Writer for iOS and it works out-of-the-box for my
+                          need.
+
+
+                          ## Conventions in LaTeX
+
+
+                          For both article and beamer presentations, the title
+                          is taken from the filename.
+
+                          For the article class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ### or more: subsubsection
+
+
+                          For the beamer (presentation) class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ###: frame (i.e. slide)
+
+                          > #### or more: subsubsection
+
+
+                          Please note that no proprietary command is needed to
+                          start a slide. Instead, as the idea is to use the same
+                          file to generate multiple types of documents, the
+                          triple hash ("###") is used.
+
+
+                          ## Future work
+
+
+                          * Support for citations (bibtex).
+
+                          * Support for footnotes.
+
+
+                          V2.1:
+
+                          * the FTP server address has to be defined in the
+                          workflow.
+
+                          V.2.0: 
+
+                          * UI redesign (for Editorial 1.1)
+
+                          * possibility to upload to an ftp host the article or
+                          the presentation (the latter requires deck
+                          server-side).
+
+                          V1.3:
+
+                          * LaTex tables: relevant characters for LaTex tables
+                          (e.g. &) are not escaped any more. Tables now work.
+
+                          * LaTex tables: \hline now inserted between headers
+                          and body.
+
+                          V1.2: 
+
+                          * html5 presentations, when exported, are now uploaded
+                          to a web hosting service thorugh ftp.
+
+                          * horizontal-slide.css commented out as doesn't work
+                          on some platforms
+
+                          * images are no more embedded in preview presentation
+                          as don't always work correctly
+                        title: md->html_tex
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/6404062123655168/qo_FjezucTY
+                      - description: >
+                          # md->html_pdf_tex v.1.0
+
+
+                          ## Authors:
+
+
+                          * Maurizio Manuguerra (maurizio.manuguerra@gmail.com)
+
+                          * Robert Quinn
+
+
+                          ## Introduction
+
+
+                          This set of routines has been written with the idea
+                          that markdown files can be the origin of a plethora of
+                          formats and kind of documents. Specifically, right now
+                          md files can be converted to html, pdf, tex files, and
+                          both the LaTeX "article" and "beamer" classes are
+                          supported. 
+
+                          **The same source files can be used to generate a
+                          quick report, an article or a presentation.**
+
+                          Tables, equations (via MathJax) and images (local and
+                          remote) are supported in all the formats. 
+
+
+                          ## Use
+                           
+                          This workflow starts from a md file and the user can
+                          choose between these options:
+                           
+                          1. Preview of the html generated with markdown.
+
+
+                          2. Creation of quick PDF files via Reedle Documents
+                          (based on the html code). Remote images are
+                          temporarely downloaded and all the images are embedded
+                          in the html file in base64 encoding.
+
+
+                          3. Creation of LaTeX files, either in class "article"
+                          or "beamer".  The .tex file generated is both copied
+                          in the clipboard and included in a zip file with all
+                          the images used in md file. Remote images are
+                          downloaded to create the zip file and then deleted.
+                          Presentations in beamer can be created using
+                          well-designed md files (i.e. with sensible slide
+                          breaks) or just using a generic md file. In such case,
+                          the interpreter will make its own best to make things
+                          look ok (not super).
+
+
+                          Use Reedle Documents, any other suitable app or an
+                          old-fashioned computer to unzip the project file and
+                          move the folder in your LaTeX compiler of choice. I
+                          have tested with a LaTeX installation on OSX, Texpad
+                          for iOS and Tex Writer for iOS and it works
+                          out-of-the-box for my need.
+
+
+                          ## Conventions in LaTeX
+
+
+                          For both article and beamer presentations, the title
+                          is taken from the filename.
+
+                          For the article class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ### or more: subsubsection
+
+
+                          For the beamer (presentation) class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ###: frame (i.e. slide)
+
+                          > #### or more: subsubsection
+
+
+                          Please note that no proprietary command is needed to
+                          start a slide. Instead, as the idea is to use the same
+                          file to generate multiple types of documents, the
+                          triple hash ("###") is used.
+
+
+                          ## Future work
+
+
+                          * Support for citations (bibtex).
+
+                          * Support for footnotes.
+                        title: md->html_pdf_tex
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5862516810842112/mfue7vUFZAM
+                      - description: >-
+                          # md->html_pdf_tex
+
+
+                          ## Authors:
+
+
+                          * Maurizio Manuguerra (maurizio.manuguerra@gmail.com)
+
+                          * Robert Quinn
+
+
+                          ## Introduction
+
+
+                          This set of routines has been written with the idea
+                          that markdown files can be the origin of a plethora of
+                          formats and kind of documents. Specifically, right now
+                          md files can be converted to html, pdf, tex files, and
+                          both the LaTeX "article" and "beamer" classes are
+                          supported. 
+
+                          **The same source files can be used to generate a
+                          quick report, an article or a presentation.**
+
+
+                          ## Use
+                           
+                          This workflow starts from a md file and the user can
+                          choose between these options:
+                           
+                          1. Preview of the html generated with markdown.
+
+
+                          2. Creation of quick PDF files via Reedle Documents
+                          (based on the html code). Remote images are
+                          temporarely downloaded and all the images are embedded
+                          in the html file in base64 encoding.
+
+
+                          3. Creation of LaTeX files, either in class "article"
+                          or "beamer".  Tables and images (local and remote) are
+                          supported. The .tex file generated is both copied in
+                          the clipboard and included in a zip file with all the
+                          images used in md file. Remote images are downloaded
+                          to create the zip file and then deleted. Presentations
+                          in beamer can be created using well-designed md files
+                          (i.e. with sensible slide breaks) or just using a
+                          generic md file. In such case, the interpreter will
+                          make its own best to make things look ok (not super).
+
+
+                          Use Reedle Documents, any other suitable app or an
+                          old-fashioned computer to unzip the project file and
+                          move the folder in your LaTeX compiler of choice. I
+                          have tested with a LaTeX installation on OSX, Texpad
+                          for iOS and Tex Writer for iOS and it works
+                          out-of-the-box for my need.
+
+
+                          ## Conventions in LaTeX
+
+
+                          For both article and beamer presentations, the title
+                          is taken from the filename.
+
+                          For the article class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ### or more: subsubsection
+
+
+                          For the beamer (presentation) class,
+
+
+                          > #: section
+
+                          > ##: subsection
+
+                          > ###: frame (i.e. slide)
+
+                          > #### or more: subsubsection
+
+
+                          Please note that no proprietary command is needed to
+                          start a slide. Instead, as the idea is to use the same
+                          file to generate multiple types of documents, the
+                          triple hash ("###") is used.
+                        title: md->html_pdf_tex
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5795858918408192/HybFHu4qXn4
+                      - description: >-
+                          A backend workflow that receives input from a Mr.
+                          reader service. Open URL for an article in Mr. Reader,
+                          in Editorial's browser. The service is simple enough.
+                          Set it up as follows:
+
+
+                          editorial://?input=[URL]&command=MrReaderURL
+
+
+                          Obviously, use Mr. Reader's predefined [URL]
+                          placeholder for the input= . If you don't know, it's
+                          located above the keyboard when editing a service. 
+
+
+                          I made it so I can run certain workflows in Editorial
+                          on particularly interesting or important articles,
+                          such as the clip Webpage, or to make a markdown link
+                          for an article, or save as a "tab" via the Save and
+                          Reopen Tabs duo workflows. Interested in adapting some
+                          workflows directly onto this one so we'll see what
+                          comes of it. 
+                        title: MrReaderURL
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5248029397352448/UM7QGkev0vk
+                      - description: >-
+                          Creates a table of contents to link to sections of an
+                          article using header IDs. The workflow extracts header
+                          names (between H2 and H6) and builds a list that links
+                          to sections using the Article URL variable at the
+                          beginning of the workflow.
+
+
+                          Example:
+
+
+                          http://www.macstories.net/roundups/os-x-mavericks-tips-tricks-and-details/#Section1
+
+
+                          http://www.macstories.net/roundups/os-x-mavericks-tips-tricks-and-details/#Section2
+                        title: Create ToC
+                        url: >-
+                          http://editorial-app.appspot.com/workflow/5801868382961664/KblIqnTUb0I
+  /workflows/recent:
+    get:
+      summary: Get Recent Workflows
+      description: Get Recent Workflows
+      operationId: getRecentWorkflows
+      parameters:
+        - name: format
+          in: query
+          schema:
+            type: string
+            example: json
+        - name: limit
+          in: query
+          schema:
+            type: string
+            example: '499'
+      responses:
+        '200':
+          description: ''
+  /workflow/5046322772049920/pjMNMniXSII:
+    get:
+      summary: Workflow Info
+      description: Workflow Info
+      operationId: workflowInfo
+      parameters:
+        - name: format
+          in: query
+          schema:
+            type: string
+            example: json
+      responses:
+        '200':
+          description: Workflow Info
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache
+            Content-Length:
+              schema:
+                type: string
+                example: '2271'
+            Date:
+              schema:
+                type: string
+                example: Thu, 20 Apr 2023 07:41:07 GMT
+            Server:
+              schema:
+                type: string
+                example: Google Frontend
+            X-Cloud-Trace-Context:
+              schema:
+                type: string
+                example: d3f21bdc7220f423e4e973650e72409c;o=1
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  description:
+                    type: string
+                    example: >-
+                      Manually triggers Editorial’s Dropbox sync action and
+                      calls the native `Bleep` notification sound when the sync
+                      has completed.
+                  install_url:
+                    type: string
+                    example: >-
+                      editorial://add-workflow?workflow-data=%7B%22username%22%3A%20%22David%20Blue%22%2C%20%22description%22%3A%20%22Manually%20triggers%20Editorial%5Cu2019s%20Dropbox%20sync%20action%20and%20calls%20the%20native%20%60Bleep%60%20notification%20sound%20when%20the%20sync%20has%20completed.%22%2C%20%22actions%22%3A%20%5B%7B%22pauseWithoutShowingParameters%22%3A%20false%2C%20%22pauseBeforeRunning%22%3A%20false%2C%20%22customTitle%22%3A%20%22%22%2C%20%22parameters%22%3A%20%7B%7D%2C%20%22class%22%3A%20%22WorkflowActionSyncWithDropbox%22%7D%2C%20%7B%22customTitle%22%3A%20%22%22%2C%20%22parameters%22%3A%20%7B%22effectName%22%3A%20%22Bleep%22%2C%20%22waitUntilFinished%22%3A%20true%7D%2C%20%22pauseWithoutShowingParameters%22%3A%20false%2C%20%22colorLabel%22%3A%203%2C%20%22class%22%3A%20%22WorkflowActionPlaySoundEffect%22%2C%20%22pauseBeforeRunning%22%3A%20false%7D%5D%2C%20%22version%22%3A%20%22120003%22%2C%20%22device%22%3A%20%7B%22userInterfaceIdiom%22%3A%200%2C%20%22model%22%3A%20%22iPhone4%2C1%22%2C%20%22systemVersion%22%3A%20%228.4.1%22%7D%2C%20%22icon%22%3A%20%22minicons-icons-refresh-update-1.png%22%2C%20%22type%22%3A%20%22wkflw%22%2C%20%22public%22%3A%20true%2C%20%22name%22%3A%20%22Dropbox%20Sync%22%7D
+                  title:
+                    type: string
+                    example: Dropbox Sync
+                  url:
+                    type: string
+                    example: >-
+                      http://editorial-app.appspot.com/workflow/5046322772049920/pjMNMniXSII
+                  workflow_data:
+                    type: object
+                    properties:
+                      actions:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            class:
+                              type: string
+                              example: WorkflowActionSyncWithDropbox
+                            colorLabel:
+                              type: number
+                              example: 3
+                            customTitle:
+                              type: string
+                              example: ''
+                            parameters:
+                              type: object
+                              properties:
+                                effectName:
+                                  type: string
+                                  example: Bleep
+                                waitUntilFinished:
+                                  type: boolean
+                                  example: true
+                            pauseBeforeRunning:
+                              type: boolean
+                              example: false
+                            pauseWithoutShowingParameters:
+                              type: boolean
+                              example: false
+                        example:
+                          - class: WorkflowActionSyncWithDropbox
+                            customTitle: ''
+                            parameters: {}
+                            pauseBeforeRunning: false
+                            pauseWithoutShowingParameters: false
+                          - class: WorkflowActionPlaySoundEffect
+                            colorLabel: 3
+                            customTitle: ''
+                            parameters:
+                              effectName: Bleep
+                              waitUntilFinished: true
+                            pauseBeforeRunning: false
+                            pauseWithoutShowingParameters: false
+                      description:
+                        type: string
+                        example: >-
+                          Manually triggers Editorial’s Dropbox sync action and
+                          calls the native `Bleep` notification sound when the
+                          sync has completed.
+                      device:
+                        type: object
+                        properties:
+                          model:
+                            type: string
+                            example: iPhone4,1
+                          systemVersion:
+                            type: string
+                            example: 8.4.1
+                          userInterfaceIdiom:
+                            type: number
+                            example: 0
+                      icon:
+                        type: string
+                        example: minicons-icons-refresh-update-1.png
+                      name:
+                        type: string
+                        example: Dropbox Sync
+                      public:
+                        type: boolean
+                        example: true
+                      type:
+                        type: string
+                        example: wkflw
+                      username:
+                        type: string
+                        example: David Blue
+                      version:
+                        type: string
+                        example: '120003'
+              examples:
+                Workflow Info:
+                  value:
+                    description: >-
+                      Manually triggers Editorial’s Dropbox sync action and
+                      calls the native `Bleep` notification sound when the sync
+                      has completed.
+                    install_url: >-
+                      editorial://add-workflow?workflow-data=%7B%22username%22%3A%20%22David%20Blue%22%2C%20%22description%22%3A%20%22Manually%20triggers%20Editorial%5Cu2019s%20Dropbox%20sync%20action%20and%20calls%20the%20native%20%60Bleep%60%20notification%20sound%20when%20the%20sync%20has%20completed.%22%2C%20%22actions%22%3A%20%5B%7B%22pauseWithoutShowingParameters%22%3A%20false%2C%20%22pauseBeforeRunning%22%3A%20false%2C%20%22customTitle%22%3A%20%22%22%2C%20%22parameters%22%3A%20%7B%7D%2C%20%22class%22%3A%20%22WorkflowActionSyncWithDropbox%22%7D%2C%20%7B%22customTitle%22%3A%20%22%22%2C%20%22parameters%22%3A%20%7B%22effectName%22%3A%20%22Bleep%22%2C%20%22waitUntilFinished%22%3A%20true%7D%2C%20%22pauseWithoutShowingParameters%22%3A%20false%2C%20%22colorLabel%22%3A%203%2C%20%22class%22%3A%20%22WorkflowActionPlaySoundEffect%22%2C%20%22pauseBeforeRunning%22%3A%20false%7D%5D%2C%20%22version%22%3A%20%22120003%22%2C%20%22device%22%3A%20%7B%22userInterfaceIdiom%22%3A%200%2C%20%22model%22%3A%20%22iPhone4%2C1%22%2C%20%22systemVersion%22%3A%20%228.4.1%22%7D%2C%20%22icon%22%3A%20%22minicons-icons-refresh-update-1.png%22%2C%20%22type%22%3A%20%22wkflw%22%2C%20%22public%22%3A%20true%2C%20%22name%22%3A%20%22Dropbox%20Sync%22%7D
+                    title: Dropbox Sync
+                    url: >-
+                      http://editorial-app.appspot.com/workflow/5046322772049920/pjMNMniXSII
+                    workflow_data:
+                      actions:
+                        - class: WorkflowActionSyncWithDropbox
+                          customTitle: ''
+                          parameters: {}
+                          pauseBeforeRunning: false
+                          pauseWithoutShowingParameters: false
+                        - class: WorkflowActionPlaySoundEffect
+                          colorLabel: 3
+                          customTitle: ''
+                          parameters:
+                            effectName: Bleep
+                            waitUntilFinished: true
+                          pauseBeforeRunning: false
+                          pauseWithoutShowingParameters: false
+                      description: >-
+                        Manually triggers Editorial’s Dropbox sync action and
+                        calls the native `Bleep` notification sound when the
+                        sync has completed.
+                      device:
+                        model: iPhone4,1
+                        systemVersion: 8.4.1
+                        userInterfaceIdiom: 0
+                      icon: minicons-icons-refresh-update-1.png
+                      name: Dropbox Sync
+                      public: true
+                      type: wkflw
+                      username: David Blue
+                      version: '120003'
+tags: []
