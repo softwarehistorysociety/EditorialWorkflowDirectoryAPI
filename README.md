@@ -1,6 +1,8 @@
 # Workflow Directory API
 - [**Source**](http://editorial-app.appspot.com/workflows/api)
 - [Postman Source](https://www.dropbox.com/s/t1rggvrro6hx9n0/Editorial%20Workflow%20API.postman_collection.json?dl=0)
+- [Postman Published Documentation](https://documenter.getpostman.com/view/15808119/2s93Y2ThGt)
+- [**Postman Collection URL**](https://www.postman.com/extratone/workspace/juegos/collection/15808119-2fc33c51-e5ec-4084-98fe-462b253f7bf3?action=share&creator=15808119) - `https://www.postman.com/extratone/workspace/juegos/collection/15808119-2fc33c51-e5ec-4084-98fe-462b253f7bf3?action=share&creator=15808119`
 
 The workflow directory has a simple, JSON-based API that allows you to get information about shared workflows programmatically, for example using a Python script.
 
